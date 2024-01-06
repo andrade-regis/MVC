@@ -1,16 +1,23 @@
-﻿namespace LanchesLinux
+﻿using LanchesLinux.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+
+namespace LanchesLinux
 {
     public class Startup
     {
-        public IConfiguration _Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
-            _Configuration = configuration;
+            Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllersWithViews();
         }
 
